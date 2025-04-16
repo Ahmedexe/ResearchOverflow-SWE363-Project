@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Overflow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="welcomePage.png" type="image/png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+  
+    body {
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
+  
+    #splash-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #fff;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s ease;
+  opacity: 1;
+}
+
+#splash-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+    #splash-screen img {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+body.hidden main,
+body.hidden header {
+  opacity: 0;
+  transition: opacity 1s ease;
+  display: none;
+}
+
+body.visible main,
+body.visible header {
+  opacity: 1;
+}
+
+
+  
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+    }
+  
+    nav button,
+    .advanced-btn {
+      background-color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: 600;
+    }
+  
+    .advanced-btn {
+      background-color: #c97a44;
+      color: #fff;
+    }
+  
+    .search-bar {
+      flex: 1;
+      margin: 0 20px;
+    }
+  
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+  
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+  
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s;
+    }
+  
+    .card:hover {
+      transform: translateY(-5px);
+    }
+  
+    .card img {
+      width: 100%;
+      height: auto;
+    }
+  
+    .card-body {
+      padding: 15px;
+    }
+  
+    .card-body h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  
+    .card-body p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+  
+    .view-link {
+      color: #007B5E;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  
+    .view-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+  
+  
+</head>
+<body>
+  <div id="splash-screen">
+    <img src="welcomePage.png" alt="Welcome screen" />
+  </div>
+
+  <header>
+    <nav>
+      <button id="home-btn">HomePage</button>
+      <button id="account-btn">Account</button>
+    </nav>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Search" />
+    </div>
+    <button class="advanced-btn">Advanced Research</button>
+  </header>
+
+  <main>
+    <div class="grid" id="card-container">
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+      <button id="load-more" style="
+        padding: 10px 20px;
+        background-color: #007B5E;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+      ">Load More</button>
+    </div>
+
+    </div>
+  </main>
+
+  <script>
+    let currentQuery = '';
+let currentOffset = 0;
+const pageSize = 15;
+
+    // Hide main content initially
+    document.body.classList.add('hidden');
+  
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        splash.classList.add('fade-out');
+t
+        setTimeout(() => {
+            splash.style.display = 'none';
+            document.body.classList.remove('hidden');
+            document.body.classList.add('visible');
+        }, 1000); 
+      }, 1500);
+    });
+    const loadMoreBtn = document.getElementById('load-more');
+
+loadMoreBtn.addEventListener('click', () => {
+  currentOffset += pageSize;
+  fetchCrossRefData(currentQuery, currentOffset, true);
+});
+
+  
+
+    async function fetchCrossRefData(query = currentQuery, offset = 0, append = false){
+      const apiUrl = query
+  ? `https://api.crossref.org/works?query=${encodeURIComponent(query)}&rows=${pageSize}&offset=${offset}`
+  : `https://api.crossref.org/works?rows=${pageSize}&offset=${offset}`;
+
+
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    const articles = data.message.items.map(item => ({
+      title: item.title?.[0] || "No title",
+      text: item.abstract || item['container-title']?.[0] || "No description",
+      imageUrl: "https://cdn.paperpile.com/guides/img/research-paper-illustr-400x400.png", // Placeholder image
+      url: item.URL || "#"
+    }));
+
+    renderCards(articles);
+  } catch (error) {
+    console.error("Failed to fetch from CrossRef:", error);
+    container.innerHTML = `<p>Couldn't load articles. Try again later.</p>`;
+  }
+}
+
+
+  
+    const container = document.getElementById('card-container');
+    const searchInput = document.querySelector('.search-bar input');
+    const advancedBtn = document.querySelector('.advanced-btn');
+  
+    function renderCards(data, append = false) {
+  if (!append) {
+    container.innerHTML = '';
+    currentOffset = 0;
+  }
+
+  data.forEach(card => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card';
+    cardEl.innerHTML = `
+      <img src="${card.imageUrl}" alt="Article thumbnail">
+      <div class="card-body">
+        <h4>${card.title}</h4>
+        <p>${card.text}</p>
+        <a href="${card.url}" class="view-link" target="_blank" rel="noopener">View Details →</a>
+      </div>
+    `;
+    container.appendChild(cardEl);
+  });
+}
+
+  
+
+fetchCrossRefData(currentQuery, currentOffset, false);
+
+
+advancedBtn.addEventListener('click', () => {
+  const query = searchInput.value.trim();
+  if (query) {
+    currentQuery = query;
+    currentOffset = 0;
+    fetchCrossRefData(currentQuery, currentOffset, false);
+  }
+});
+const homeBtn = document.getElementById('home-btn');
+const accountBtn = document.getElementById('account-btn'); 
+
+homeBtn.addEventListener('click', () => {
+  currentQuery = '';
+  currentOffset = 0;
+  searchInput.value = ''; 
+  fetchCrossRefData(currentQuery, currentOffset, false);
+});
+
+
+
+  </script>
+  
+</body>
+</html>
