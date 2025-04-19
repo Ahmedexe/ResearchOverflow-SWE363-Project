@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
@@ -7,6 +8,7 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [offset, setOffset] = useState(0);
   const pageSize = 15;
+  const navigate = useNavigate();
 
   const fetchCrossRefData = async (q = '', off = 0, append = false) => {
     const baseURL = q
@@ -43,19 +45,18 @@ export default function Home() {
     fetchCrossRefData(query, newOffset, true);
   };
 
+  const goToComments = (article) => {
+    navigate('/comments', { state: { article } });
+  };
 
   return (
-
     <div className="page-container">
       <Navbar />
       <div className="body-container">
         <Sidebar />
         <div className="main-content">
           <div style={{ padding: '20px', fontFamily: 'Inter, sans-serif' }}>
-            { }
-
             <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-
               <div style={{ flex: 1, margin: '0 20px' }}>
                 <input
                   type="text"
@@ -97,7 +98,7 @@ export default function Home() {
                       </a>
                       <div>
                         <button
-                          onClick={() => alert(`Feedback for: ${article.title}`)}
+                          onClick={() => goToComments(article)}
                           style={{
                             marginTop: '10px',
                             backgroundColor: '#e0e0e0',
