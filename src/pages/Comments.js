@@ -1,22 +1,21 @@
-// Comments.js
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function Comments() {
-  // Use state for the comments list so we can update the vote counts
+  const { state } = useLocation();
+  const article = state?.article;
+
   const [comments, setComments] = useState([
     { id: 1, username: "Alice", text: "Great paper! Very insightful.", votes: 10 },
     { id: 2, username: "Bob", text: "I think it needs more data to back up some claims.", votes: 3 }
   ]);
 
-  // State to toggle the reply field for each comment
   const [replyVisible, setReplyVisible] = useState({});
 
-  // Toggle reply section visibility
   const toggleReply = (id) => {
     setReplyVisible((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Increments the vote count for a given comment
   const voteUp = (id) => {
     setComments((prevComments) =>
       prevComments.map((comment) =>
@@ -25,7 +24,6 @@ export default function Comments() {
     );
   };
 
-  // Decrements the vote count for a given comment
   const voteDown = (id) => {
     setComments((prevComments) =>
       prevComments.map((comment) =>
@@ -36,15 +34,25 @@ export default function Comments() {
 
   return (
     <div className="container mt-5">
-      {/* Research Paper Placeholder */}
       <div className="mb-4 p-4 border rounded" style={{ minHeight: '300px' }}>
-        <h2 className="text-center">Research Paper Title</h2>
-        <p className="text-center">
-          This is a placeholder for your research paper content. The design will be changed later.
-        </p>
+        {article ? (
+          <>
+            <h2 className="text-center">{article.title}</h2>
+            <p className="text-center">{article.text}</p>
+            <div className="text-center">
+              <a href={article.url} target="_blank" rel="noopener noreferrer">
+                View Full Paper
+              </a>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className="text-center">Research Paper Title</h2>
+            <p className="text-center">This is a placeholder for your research paper content. The design will be changed later.</p>
+          </>
+        )}
       </div>
 
-      {/* Comments Section */}
       <div>
         <h3>Comments</h3>
         {comments.map((comment) => (
