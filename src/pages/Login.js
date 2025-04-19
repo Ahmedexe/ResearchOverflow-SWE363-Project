@@ -6,6 +6,9 @@ export default function Login() {
     const handleSignIn = () => {
         navigate('/home');
     };
+    const handleAdmin = () => {
+        navigate('/admin');
+    };
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -57,6 +60,10 @@ export default function Login() {
 
                         <button type="button" className="btn btn-warning w-100" onClick={handleSignIn}>
                             Login
+                        </button>
+                        <br></br>
+                        <button type="button" className="btn btn-warning w-100" onClick={handleAdmin}>
+                            admin 
                         </button>
 
                         <p className="mt-3 text-center">
