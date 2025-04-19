@@ -10,6 +10,7 @@ function Navbar() {
       <div className='item'>
         <Link to="/profile">
           <img
+            id="avatar"
             width="35px"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNQ6ZmsiCzSC16bStr1KjZNcIBW5hAMa1ek6xoNeSSw5wQouq_N7dQCxlxI02TIeZk1e0&usqp=CAU"
             alt="Avatar"
