@@ -7,7 +7,7 @@ function Sidebar() {
   return (
     <div className='sidebar'>
 
-      <Link to="/" className="item">
+      <Link to="/home" className="item">
         <Icon.House size={25} /> Home
       </Link>
 
