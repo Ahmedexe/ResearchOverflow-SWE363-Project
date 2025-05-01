@@ -28,4 +28,4 @@ async function deleteUserByEmail(email) {
 }
 
 // Replace this with the email you want to delete
-deleteUserByEmail('test@example.com');
+deleteUserByEmail('aa@example.com');
