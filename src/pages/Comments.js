@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { Container, Card, Button, Form } from 'react-bootstrap';
 import { FaArrowUp, FaArrowDown, FaComment } from 'react-icons/fa';
 
 export default function Comments() {
   const { state } = useLocation();
-  const paperId = state?.paperId;
+  // const paperTitle = state?.paperTitle;
   const article = state?.article;
+  const paperTitle = article?.title
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [replyVisible, setReplyVisible] = useState({});
 
   useEffect(() => {
-    if (paperId) {
-      fetchComments(paperId);
+    if (paperTitle) {
+      fetchComments(paperTitle);
     }
-  }, [paperId]);
+  }, [paperTitle]);
 
-  const fetchComments = async (paperId) => {
+  const fetchComments = async (paperTitle) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/comments/${paperId}`);
+      const res = await axios.get(`http://localhost:5000/api/comments/${paperTitle}`);
       setComments(res.data);
     } catch (err) {
       console.error('Error fetching comments:', err);
@@ -33,9 +35,8 @@ export default function Comments() {
     try {
       const res = await axios.post('http://localhost:5000/api/comments', {
         commentorUsername: 'currentUser',
-        paperId: paperId,
         paperTitle: article.title,
-        comment: newComment
+        comment: newComment,
       });
       setComments([...comments, res.data]);
       setNewComment('');
@@ -68,6 +69,7 @@ export default function Comments() {
 
   return (
     <Container className="py-4">
+      <Navbar />
       <Card className="mb-4 shadow-sm">
         <Card.Body>
           {article ? (

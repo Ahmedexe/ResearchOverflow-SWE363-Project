@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api', require('./routes/auth'));  // Mount the signup route
-app.use('/api/comments', require('./routes/comments'));
+app.use('/api', require('./routes/comments'));
 
 // Start the server
 const PORT = process.env.PORT || 5000;
