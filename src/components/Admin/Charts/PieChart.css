@@ -1,6 +1,8 @@
 .admin-pie-chart {
-  width: 100%;
-  height: 100%;
+  width: 50%;
+  height: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .admin-pie-chart .admin-chart-header {

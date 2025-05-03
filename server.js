@@ -3,9 +3,10 @@ const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const app = express();
+const dotenv = require("dotenv");
 
 app.use(cors()); // Enable CORS for all routes
-
+dotenv.config();
 // Connect to MongoDB
 connectDB();
 

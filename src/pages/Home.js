@@ -18,6 +18,7 @@ export default function Home() {
     try {
       const res = await fetch(baseURL);
       const data = await res.json();
+      console.log("data of articles", data)
       const items = data.message.items.map((item) => ({
         title: item.title?.[0] || 'No title',
         text: item.abstract?.replace(/<[^>]+>/g, '') || item['container-title']?.[0] || 'No description',

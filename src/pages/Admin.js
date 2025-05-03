@@ -11,6 +11,7 @@ import { Snackbar, Alert } from '@mui/material';
 
 function Admin() {
   const [activePage, setActivePage] = useState('home');
+  const [displayed, setDisplayed] = useState(false);
   const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
 
   const handleCloseNotification = () => {
@@ -53,7 +54,7 @@ function Admin() {
             </div>
             
             <div className="admin-users-table-container">
-              <DataTable />
+              <DataTable displayed={true}/> 
             </div>
           </div>
         );
@@ -79,7 +80,7 @@ function Admin() {
             </div>
             
             <div className="admin-membership-table-container">
-              <DataTable />
+              <DataTable displayed={false}/>
             </div>
           </div>
         );
@@ -151,22 +152,22 @@ function Admin() {
             <StatsCards />
             <div className="admin-charts-container">
               <div className="admin-chart-row">
-                <div className="admin-line-chart-container">
+                {/* <div className="admin-line-chart-container">
                   <LineChart />
-                </div>
+                </div> */}
                 <div className="admin-pie-chart-container">
                   <PieChart />
                 </div>
               </div>
               <div className="admin-chart-row">
-                <div className="admin-donut-chart-container">
+                {/* <div className="admin-donut-chart-container">
                   <PieChart donut={true} />
-                </div>
+                </div> */}
               </div>
               <div className="admin-chart-row">
-                <div className="admin-bar-chart-container">
+                {/* <div className="admin-bar-chart-container">
                   <BarChart />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="admin-table-container">
@@ -181,7 +182,7 @@ function Admin() {
     <div className="admin-app">
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
       <div className="admin-main-content">
-        <Header />
+        <Header displayed={activePage == "settings" ? true : false}/>
         <div className="admin-dashboard-content">
           {renderContent()}
         </div>
