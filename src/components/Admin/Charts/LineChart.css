@@ -1,0 +1,53 @@
+.admin-line-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.admin-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.admin-chart-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--admin-text-primary);
+  font-weight: 600;
+}
+
+.admin-chart-period {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-chart-period span {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  color: var(--admin-text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.admin-chart-period span:hover {
+  background-color: var(--admin-hover-color);
+}
+
+.admin-chart-period span.active {
+  background-color: var(--admin-primary-color);
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .admin-chart-period {
+    margin-top: 10px;
+  }
+}

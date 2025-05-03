@@ -1,11 +1,49 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+
+
+
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSignIn = () => {
-        navigate('/home');
+    const handleSignIn = async () => {
+        try {
+            const res = await axios.post('http://localhost:5000/api/login', {
+                email,
+                password,
+            });
+
+            if (res.data.msg === 'Login successful') {
+                navigate('/home');
+            } else {
+                alert(res.data.msg);
+            }
+        } catch (err) {
+            alert(err.response?.data?.msg || 'Login failed');
+        }
     };
+
+    const handleAdmin = async () => {
+        try {
+            const res = await axios.post('http://localhost:5000/api/login', {
+                email,
+                password,
+            });
+
+            if (res.data.msg === 'Login successful' && email === 'admin@example.com') {
+                navigate('/admin');
+            } else {
+                alert('Access denied or invalid credentials');
+            }
+        } catch (err) {
+            alert(err.response?.data?.msg || 'Admin login failed');
+        }
+    };
+
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -45,18 +83,34 @@ export default function Login() {
                     <form>
                         <div className="mb-3">
                             <label className="form-label">Email</label>
-                            <input type="email" className="form-control" placeholder="name@example.com" />
+                            <input
+                                type="email"
+                                className="form-control"
+                                placeholder="name@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </div>
 
                         <div className="mb-3">
                             <label className="form-label">Password</label>
-                            <input type="password" className="form-control" placeholder="Password" />
+                            <input
+                                type="password"
+                                className="form-control"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                         </div>
 
 
 
                         <button type="button" className="btn btn-warning w-100" onClick={handleSignIn}>
                             Login
+                        </button>
+                        <br></br>
+                        <button type="button" className="btn btn-warning w-100" onClick={handleAdmin}>
+                            admin
                         </button>
 
                         <p className="mt-3 text-center">

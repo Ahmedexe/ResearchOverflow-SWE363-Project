@@ -1,0 +1,221 @@
+:root {
+  --admin-primary-color: #f97316;
+  --admin-secondary-color: #3b82f6;
+  --admin-background-color: #f8fafc;
+  --admin-sidebar-bg: #ffffff;
+  --admin-text-primary: #1e293b;
+  --admin-text-secondary: #64748b;
+  --admin-border-color: #e2e8f0;
+  --admin-card-bg: #ffffff;
+  --admin-hover-color: #f1f5f9;
+}
+
+.admin-app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: var(--admin-background-color);
+}
+
+.admin-dashboard-content {
+  margin-top: 20px;
+}
+
+.admin-charts-container {
+  margin-top: 20px;
+}
+
+.admin-chart-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-line-chart-container, 
+.admin-pie-chart-container, 
+.admin-donut-chart-container, 
+.admin-bar-chart-container {
+  background-color: var(--admin-card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-line-chart-container {
+  flex: 2;
+}
+
+.admin-pie-chart-container {
+  flex: 1;
+}
+
+.admin-donut-chart-container {
+  width: 100%;
+}
+
+.admin-bar-chart-container {
+  width: 100%;
+}
+
+.admin-table-container {
+  background-color: var(--admin-card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Users Page Styles */
+.admin-users-page,
+.admin-membership-page,
+.admin-settings-page {
+  padding: 20px;
+}
+
+.admin-page-description {
+  color: var(--admin-text-secondary);
+  margin-bottom: 20px;
+}
+
+.admin-users-stats,
+.admin-membership-stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-users-stat-card,
+.admin-membership-stat-card {
+  flex: 1;
+  background-color: var(--admin-card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-users-stat-card h3,
+.admin-membership-stat-card h3 {
+  font-size: 0.9rem;
+  color: var(--admin-text-secondary);
+  margin-bottom: 10px;
+}
+
+.admin-users-stat-value,
+.admin-membership-stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+}
+
+.admin-users-table-container,
+.admin-membership-table-container {
+  background-color: var(--admin-card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Settings Page Styles */
+.admin-settings-container {
+  background-color: var(--admin-card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-settings-section {
+  margin-bottom: 30px;
+}
+
+.admin-settings-section h3 {
+  font-size: 1.1rem;
+  color: var(--admin-text-primary);
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--admin-border-color);
+}
+
+.admin-settings-form-group {
+  margin-bottom: 20px;
+}
+
+.admin-settings-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--admin-text-secondary);
+}
+
+.admin-settings-form-group input[type="text"],
+.admin-settings-form-group input[type="number"],
+.admin-settings-form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--admin-border-color);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.admin-settings-form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.admin-settings-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.admin-settings-toggle input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.admin-settings-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.admin-settings-save-btn {
+  padding: 10px 20px;
+  background-color: var(--admin-primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.admin-settings-reset-btn {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: var(--admin-text-secondary);
+  border: 1px solid var(--admin-border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-app {
+    flex-direction: column;
+  }
+  
+  .admin-chart-row {
+    flex-direction: column;
+  }
+  
+  .admin-users-stats,
+  .admin-membership-stats {
+    flex-direction: column;
+  }
+  
+  .admin-settings-actions {
+    flex-direction: column;
+  }
+}

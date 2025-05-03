@@ -1,0 +1,86 @@
+.admin-stats-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-stat-card {
+  flex: 1;
+  background-color: var(--admin-card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.admin-stat-icon svg {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.admin-members {
+  background-color: var(--admin-primary-color);
+}
+
+.admin-active {
+  background-color: var(--admin-secondary-color);
+}
+
+.admin-requests {
+  background-color: #10b981; /* Green color for requests */
+}
+
+.admin-stat-info {
+  flex: 1;
+}
+
+.admin-stat-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 0.9rem;
+  color: var(--admin-text-secondary);
+  font-weight: 500;
+}
+
+.admin-stat-value {
+  margin: 0 0 5px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+}
+
+.admin-stat-trend {
+  margin: 0;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.admin-up {
+  color: #10b981; /* Green for positive trend */
+}
+
+.admin-down {
+  color: #ef4444; /* Red for negative trend */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-stats-cards {
+    flex-direction: column;
+  }
+  
+  .admin-stat-card {
+    margin-bottom: 10px;
+  }
+}

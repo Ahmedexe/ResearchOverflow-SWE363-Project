@@ -1,13 +1,38 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 export default function Signup() {
   const navigate = useNavigate();
-  // const [role, setRole] = useState('Educator');
+  const [fname, setFirstName] = useState('');
+  const [lname, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSignup = () => {
-    navigate('/home');
+
+
+  const handleSignup = async () => {
+  
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/signup', {
+        fname,
+        lname,
+        email,
+        password
+      });
+
+      if (res.data.msg === 'User registered successfully') {
+        navigate('/home');
+      } else {
+        alert(res.data.msg);
+      }
+    } catch (err) {
+      alert(err.response?.data?.msg || 'Signup failed');
+    }
   };
+
 
   return (
     <div className="container-fluid vh-100 d-flex flex-wrap p-0">
@@ -34,14 +59,14 @@ export default function Signup() {
         />
 
         <div className="position-absolute top-0 start-0 w-100 h-100 d-md-none"
-             style={{ backgroundColor: 'rgba(255,255,255,0.6)' }}></div>
+          style={{ backgroundColor: 'rgba(255,255,255,0.6)' }}></div>
 
         {/* Content */}
         <div className="w-75 position-relative">
           <h3 className="mb-4 ">Register to your new account</h3>
           <p className="mb-4">Please enter your details.</p>
 
-            
+
           {/*   {/* Role Selection 
           <div className="mb-3 d-flex gap-2">
             <button type="button" className={`btn ${role === 'Educator' ? 'btn-warning' : 'btn-light'}`}
@@ -58,19 +83,44 @@ export default function Signup() {
           {/* Form */}
           <form>
             <div className="mb-3">
-              <input type="text" placeholder="First Name" className="form-control" />
+              <input
+                type="text"
+                placeholder="First Name"
+                className="form-control"
+                value={fname}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+
             </div>
 
             <div className="mb-3">
-              <input type="text" placeholder="Last Name" className="form-control" />
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="form-control"
+                value={lname}
+                onChange={(e) => setLastName(e.target.value)}
+              />
             </div>
 
             <div className="mb-3">
-              <input type="email" placeholder="Email" className="form-control" />
+              <input
+                type="email"
+                placeholder="Email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div className="mb-3">
-              <input type="password" placeholder="Password" className="form-control" />
+              <input
+                type="password"
+                placeholder="Password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <button type="button" className="btn btn-warning w-100" onClick={handleSignup}>
