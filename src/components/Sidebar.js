@@ -1,9 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom'; 
 import "./Sidebar.css";
 import * as Icon from "react-bootstrap-icons";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate('/login');
+  };
+
   return (
     <div className='sidebar'>
 
@@ -15,9 +22,17 @@ function Sidebar() {
         <Icon.Person size={25} /> Profile
       </Link>
 
-      <Link to="/Settings" className="item">
+      <Link to="/settings" className="item">
         <Icon.Gear size={25} /> Settings
       </Link>
+
+
+      <div className="spacer" />
+
+
+      <button className="item logout-btn" onClick={handleLogout}>
+        <Icon.BoxArrowRight size={25} /> Logout
+      </button>
 
     </div>
   );

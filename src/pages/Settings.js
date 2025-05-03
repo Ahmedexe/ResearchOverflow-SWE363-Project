@@ -1,96 +1,143 @@
-import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-import "./Settings.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function Settings() {
-  const [profileImage, setProfileImage] = useState(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNQ6ZmsiCzSC16bStr1KjZNcIBW5hAMa1ek6xoNeSSw5wQouq_N7dQCxlxI02TIeZk1e0&usqp=CAU"
-  );
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+export default function Signup() {
+  const navigate = useNavigate();
+  const [fname, setFirstName] = useState('');
+  const [lname, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
+
+  const handleSignup = async () => {
+  
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/signup', {
+        fname,
+        lname,
+        email,
+        password
+      });
+
+      if (res.data.msg === 'User registered successfully') {
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        navigate('/home');
+      }
+       else {
+        alert(res.data.msg);
+      }
+    } catch (err) {
+      alert(err.response?.data?.msg || 'Signup failed');
     }
   };
 
-  return (
-    <div className="page-container">
-      <Navbar />
-      <div className="body-container">
-        <Sidebar />
-        <div className="main-content">
-          <h1>Settings</h1>
 
-          <div className="profile-header">
-            <div className="avatar-container">
-              <img src={profileImage} alt="Profile" className="avatar-img" />
-              <label htmlFor="upload-input" className="edit-icon">✏️</label>
+  return (
+    <div className="container-fluid vh-100 d-flex flex-wrap p-0">
+
+      {/* Left Image (Desktop only) */}
+      <div className="col-md-6 d-none d-md-flex align-items-center justify-content-center p-0">
+        <img
+          src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+          alt="side"
+          className="img-fluid h-100 w-100"
+          style={{ objectFit: 'cover' }}
+        />
+      </div>
+
+      {/* Right Side */}
+      <div className="col-12 col-md-6 d-flex align-items-center justify-content-center position-relative">
+
+        {/* Mobile Background */}
+        <img
+          src="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+          alt="bg"
+          className="position-absolute top-0 start-0 w-100 h-100 d-md-none"
+          style={{ objectFit: 'cover', filter: 'blur(5px)' }}
+        />
+
+        <div className="position-absolute top-0 start-0 w-100 h-100 d-md-none"
+          style={{ backgroundColor: 'rgba(255,255,255,0.6)' }}></div>
+
+        {/* Content */}
+        <div className="w-75 position-relative">
+          <h3 className="mb-4 ">Register to your new account</h3>
+          <p className="mb-4">Please enter your details.</p>
+
+
+          {/*   {/* Role Selection 
+          <div className="mb-3 d-flex gap-2">
+            <button type="button" className={`btn ${role === 'Educator' ? 'btn-warning' : 'btn-light'}`}
+                    onClick={() => setRole('Educator')}>
+              Educator
+            </button>
+            <button type="button" className={`btn ${role === 'Researcher' ? 'btn-warning' : 'btn-light'}`}
+                    onClick={() => setRole('Researcher')}>
+              Researcher
+            </button>
+          </div> 
+          */}
+
+          {/* Form */}
+          <form>
+            <div className="mb-3">
               <input
-                id="upload-input"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
+                type="text"
+                placeholder="First Name"
+                className="form-control"
+                value={fname}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+
+            </div>
+
+            <div className="mb-3">
+              <input
+                type="text"
+                placeholder="Last Name"
+                className="form-control"
+                value={lname}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
-          </div>
-          <form
-            className="settings-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const confirmChange = window.confirm("Are you sure you want to save these changes?");
-              if (confirmChange) {
-                window.location.reload();
-              }
-            }}
-          >
-            <div className="settings-card">
-              <h2>Personal Information</h2>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>First Name</label>
-                  <input type="text" defaultValue="Doe" />
-                </div>
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input type="text" defaultValue="Jane" />
-                </div>
-                <div className="form-group">
-                  <label>Phone Number</label>
-                  <input type="text" defaultValue="+1 234 567 890" />
-                </div>
-                <div className="form-group">
-                  <label>Email Address</label>
-                  <input type="email" defaultValue="jane.doe@example.com" />
-                </div>
-              </div>
+
+            <div className="mb-3">
+              <input
+                type="email"
+                placeholder="Email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
-            <div className="settings-card">
-              <h2>Change Password</h2>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>New Password</label>
-                  <input type="password" defaultValue="ABC123" />
-                </div>
-                <div className="form-group">
-                  <label>Confirm New Password</label>
-                  <input type="password" defaultValue="ABC123" />
-                </div>
-              </div>
+            <div className="mb-3">
+              <input
+                type="password"
+                placeholder="Password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
-            <div className="form-actions">
-              <button type="submit" className="save-btn">Save Changes</button>
-            </div>
+            <button type="button" className="btn btn-warning w-100" onClick={handleSignup}>
+              Register
+            </button>
+
+            <p className="mt-3 text-center">
+              Do have an account?{' '}
+              <span onClick={() => navigate('/login')} className="text-warning" style={{ cursor: 'pointer' }}>
+                Login Now
+              </span>
+            </p>
           </form>
         </div>
+
       </div>
     </div>
   );
