@@ -11,7 +11,7 @@ export default function Login() {
         try {
             localStorage.clear();
             console.log("Login attempt with email:", email, "and password:", password);
-            const res = await axios.post('http://localhost:5000/api/login', {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, {
                 email,
                 password,
             });
@@ -32,7 +32,7 @@ export default function Login() {
 
     const handleAdmin = async () => {
         try {
-            const res = await axios.post('http://localhost:5000/api/login', {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, {
                 email,
                 password,
             });

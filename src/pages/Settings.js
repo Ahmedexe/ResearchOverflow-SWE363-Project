@@ -55,7 +55,7 @@ export default function Settings() {
     if (!confirmChange) return;
 
     try {
-      const res = await axios.put('http://localhost:5000/api/user/update', {
+      const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/user/update`, {
         originalEmail: form.originalEmail,
         fname: form.fname,
         lname: form.lname,
