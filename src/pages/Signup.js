@@ -24,6 +24,7 @@ export default function Signup() {
       });
 
       if (res.data.msg === 'User registered successfully') {
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         navigate('/home');
       } else {
         alert(res.data.msg);

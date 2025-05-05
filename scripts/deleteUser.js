@@ -1,13 +1,9 @@
 // scripts/deleteUser.js
 const mongoose = require('mongoose');
+const connectDB = require('../config/db'); // Adjust the path as necessary
 
 // Connect to local MongoDB
-mongoose.connect('mongodb://localhost:27017/researchoverflow', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+connectDB();
 
 // Define User model (you can reuse your existing one)
 const User = mongoose.model('User', new mongoose.Schema({

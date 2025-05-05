@@ -20,4 +20,25 @@
   .item:hover {
     background-color: rgb(194, 194, 195);
   }
-  
+ 
+
+.spacer {
+  flex-grow: 1;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px;
+  cursor: pointer;
+  color: black;
+  font-size: 1rem;
+}
+
+.logout-btn:hover {
+  background-color: rgb(194, 194, 195);
+}
