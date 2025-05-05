@@ -9,11 +9,14 @@ export default function Login() {
 
     const handleSignIn = async () => {
         try {
+            localStorage.clear();
+            console.log("Login attempt with email:", email, "and password:", password);
             const res = await axios.post('http://localhost:5000/api/login', {
                 email,
                 password,
             });
 
+            console.log("Login response:", res.data);
             if (res.data.msg === 'Login successful') {
                 console.log("Login response:", res.data);
                 localStorage.setItem("user", JSON.stringify(res.data.user));

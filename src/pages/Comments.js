@@ -9,7 +9,7 @@ import { FaArrowUp, FaArrowDown, FaComment, FaReply } from 'react-icons/fa';
 const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
   const [replyText, setReplyText] = useState('');
   const [showReplyForm, setShowReplyForm] = useState(false);
-  
+
   const handleSubmitReply = () => {
     if (replyText.trim()) {
       addReply(comment._id, replyText);
@@ -121,6 +121,7 @@ export default function Comments() {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (paperTitle) {
@@ -130,6 +131,16 @@ export default function Comments() {
       setLoading(false);
     }
   }, [paperTitle]);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      // Optional fallback: redirect or show error
+      setUser(null);
+    }
+  }, []);
 
   const fetchComments = async (paperTitle) => {
     setLoading(true);
@@ -151,10 +162,10 @@ export default function Comments() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
-    const storedUser = JSON.parse(localStorage.getItem("user"));
+  
     try {
       const res = await axios.post('http://localhost:5000/api/comments', {
-        commentorUsername: 'currentUser', // You might want to replace this with actual user data
+        commentorUsername: user.fname + " " + user.lname, // You might want to replace this with actual user data
         paperTitle: article.title,
         comment: newComment,
       });
@@ -169,7 +180,7 @@ export default function Comments() {
   const handleAddReply = async (parentId, replyText) => {
     try {
       const res = await axios.post(`http://localhost:5000/api/comments/${parentId}/reply`, {
-        commentorUsername: 'currentUser', // Replace with actual user
+        commentorUsername: user.fname + " " + user.lname, // Replace with actual user
         comment: replyText,
       });
       

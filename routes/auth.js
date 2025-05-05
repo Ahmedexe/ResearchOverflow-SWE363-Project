@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const { ConeStriped } = require('react-bootstrap-icons');
 
 router.post('/signup', async (req, res) => {
   const { fname, lname, email, password } = req.body;
@@ -13,15 +14,13 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ msg: 'User already exists' });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create and save new user
     const newUser = new User({
       fname,
       lname,
       email: email.toLowerCase(),
-      password: hashedPassword,
+      password,
     });
 
     await newUser.save();
@@ -55,11 +54,14 @@ router.post('/login', async (req, res) => {
     if (!user) {
       return res.status(400).json({ msg: 'Invalid credentials (email)' });
     }
+    console.log(user)
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log(`${password}  and ${user.password}`)
+    console.log('isMatch:', isMatch); // Debugging line
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials (password)' });
+      return res.status(400).json({ msg: 'Invalid credentials (password ):' });
     }
 
     // Return user (excluding password)
