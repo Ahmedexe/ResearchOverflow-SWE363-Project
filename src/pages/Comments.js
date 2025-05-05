@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { Container, Card, Button, Form } from 'react-bootstrap';
 import { FaArrowUp, FaArrowDown, FaComment, FaReply } from 'react-icons/fa';
+import Sidebar from '../components/Sidebar';
 
 // Comment component to handle individual comments and their replies
 const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
@@ -49,7 +50,7 @@ const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
             <FaArrowDown className="me-1" />
             {comment.votes?.downvotes || 0}
           </Button>
-          <Button
+          {/*<Button
             variant="link"
             size="sm"
             className="text-decoration-none"
@@ -57,9 +58,9 @@ const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
           >
             <FaReply className="me-1" />
             Reply
-          </Button>
+          </Button>*/}
         </div>
-        
+
         {/* Reply form */}
         {showReplyForm && (
           <div className="ps-3 mb-3">
@@ -72,17 +73,17 @@ const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
               className="mb-2 shadow-sm"
             />
             <div className="d-flex">
-              <Button 
-                variant="primary" 
-                size="sm" 
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={handleSubmitReply}
                 className="me-2"
               >
                 Post Reply
               </Button>
-              <Button 
-                variant="outline-secondary" 
-                size="sm" 
+              <Button
+                variant="outline-secondary"
+                size="sm"
                 onClick={() => setShowReplyForm(false)}
               >
                 Cancel
@@ -90,17 +91,17 @@ const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
             </div>
           </div>
         )}
-        
+
         {/* Render replies if any */}
         {comment.replies && comment.replies.length > 0 && (
           <div className="ps-4 mt-3 border-start">
             {comment.replies.map((reply) => (
-              <CommentItem 
-                key={reply._id} 
-                comment={reply} 
-                voteUp={voteUp} 
-                voteDown={voteDown} 
-                addReply={addReply} 
+              <CommentItem
+                key={reply._id}
+                comment={reply}
+                voteUp={voteUp}
+                voteDown={voteDown}
+                addReply={addReply}
               />
             ))}
           </div>
@@ -162,7 +163,7 @@ export default function Comments() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
-  
+
     try {
       const res = await axios.post('http://localhost:5000/api/comments', {
         commentorUsername: user.fname + " " + user.lname, // You might want to replace this with actual user data
@@ -183,7 +184,7 @@ export default function Comments() {
         commentorUsername: user.fname + " " + user.lname, // Replace with actual user
         comment: replyText,
       });
-      
+
       // Update comments state with the new reply
       const updateCommentsWithReply = (commentsArray, parentId, newReply) => {
         return commentsArray.map(comment => {
@@ -212,7 +213,7 @@ export default function Comments() {
   const voteUp = async (commentId) => {
     try {
       const res = await axios.post(`http://localhost:5000/api/comments/${commentId}/upvote`);
-      
+
       // Update the comment with new vote count
       const updateCommentsWithVote = (commentsArray, commentId, updatedComment) => {
         return commentsArray.map(comment => {
@@ -237,7 +238,7 @@ export default function Comments() {
   const voteDown = async (commentId) => {
     try {
       const res = await axios.post(`http://localhost:5000/api/comments/${commentId}/downvote`);
-      
+
       // Update the comment with new vote count
       const updateCommentsWithVote = (commentsArray, commentId, updatedComment) => {
         return commentsArray.map(comment => {
@@ -260,98 +261,110 @@ export default function Comments() {
   };
 
   return (
-    <Container className="py-4">
+    <>
       <Navbar />
-      <Card className="mb-4 shadow-sm">
-        <Card.Body>
-          {article ? (
-            <>
-              <Card.Title className="text-center h3 mb-3">{article.title}</Card.Title>
-              <Card.Text className="text-center mb-4">{article.text}</Card.Text>
-              <div className="text-center">
-                <Button 
-                  variant="outline-primary" 
-                  href={article.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  View Full Paper
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <Card.Title className="text-center h3 mb-3">Research Paper Title</Card.Title>
-              <Card.Text className="text-center">
-                This is a placeholder for your research paper content. The design will be changed later.
-              </Card.Text>
-            </>
-          )}
-        </Card.Body>
-      </Card>
 
-      <Card className="shadow-sm">
-        <Card.Header className="bg-primary text-white">
-          <h3 className="mb-0">
-            <FaComment className="me-2" />
-            Comments
-          </h3>
-        </Card.Header>
-        <Card.Body>
-          <Form className="mb-4">
-            <Form.Group className="mb-3">
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-                className="shadow-sm"
-              />
-            </Form.Group>
-            <Button 
-              variant="primary" 
-              onClick={handleAddComment}
-              className="shadow-sm"
-            >
-              Post Comment
-            </Button>
-          </Form>
+      <Container fluid className="py-4">
 
-          {/* Error message */}
-          {error && (
-            <div className="alert alert-danger" role="alert">
-              {error}
-            </div>
-          )}
+        <div className="d-flex">
+          <div className="me-4">
+            <Sidebar />
+          </div>
 
-          {/* Loading state */}
-          {loading ? (
-            <div className="text-center my-4">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <p className="mt-2">Loading comments...</p>
-            </div>
-          ) : comments.length > 0 ? (
-            <div className="comments-list">
-              {comments.map((comment) => (
-                <CommentItem 
-                  key={comment._id} 
-                  comment={comment} 
-                  voteUp={voteUp} 
-                  voteDown={voteDown} 
-                  addReply={handleAddReply} 
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center my-4">
-              <p className="text-muted">No comments yet. Be the first to comment!</p>
-            </div>
-          )}
-        </Card.Body>
-      </Card>
-    </Container>
+          <div className="flex-grow-1">
+            <Card className="mb-4 shadow-sm">
+              <Card.Body>
+                {article ? (
+                  <>
+                    <Card.Title className="text-center h3 mb-3">{article.title}</Card.Title>
+                    <Card.Text className="text-center mb-4">{article.text}</Card.Text>
+                    <div className="text-center">
+                      <Button
+                        variant="outline-primary"
+                        href={article.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View Full Paper
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Card.Title className="text-center h3 mb-3">Research Paper Title</Card.Title>
+                    <Card.Text className="text-center">
+                      This is a placeholder for your research paper content. The design will be changed later.
+                    </Card.Text>
+                  </>
+                )}
+              </Card.Body>
+            </Card>
+
+            <Card className="shadow-sm">
+              <Card.Header className="bg-primary text-white">
+                <h3 className="mb-0">
+                  <FaComment className="me-2" />
+                  Comments
+                </h3>
+              </Card.Header>
+              <Card.Body>
+                <Form className="mb-4">
+                  <Form.Group className="mb-3">
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Add a comment..."
+                      className="shadow-sm"
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    onClick={handleAddComment}
+                    className="shadow-sm"
+                  >
+                    Post Comment
+                  </Button>
+                </Form>
+
+                {/* Error message */}
+                {error && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
+
+                {/* Loading state */}
+                {loading ? (
+                  <div className="text-center my-4">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2">Loading comments...</p>
+                  </div>
+                ) : comments.length > 0 ? (
+                  <div className="comments-list">
+                    {comments.map((comment) => (
+                      <CommentItem
+                        key={comment._id}
+                        comment={comment}
+                        voteUp={voteUp}
+                        voteDown={voteDown}
+                        addReply={handleAddReply}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center my-4">
+                    <p className="text-muted">No comments yet. Be the first to comment!</p>
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
+          </div>
+        </div>
+      </Container>
+    </>
   );
 }
