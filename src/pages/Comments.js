@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Container, Card, Button, Form } from 'react-bootstrap';
 import { FaArrowUp, FaArrowDown, FaComment } from 'react-icons/fa';
 
+
+
 export default function Comments() {
   const { state } = useLocation();
   // const paperTitle = state?.paperTitle;
@@ -17,13 +19,18 @@ export default function Comments() {
 
   useEffect(() => {
     if (paperTitle) {
+      console.log('Paper title:', paperTitle); // Debugging line
       fetchComments(paperTitle);
     }
   }, [paperTitle]);
 
   const fetchComments = async (paperTitle) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/comments/${paperTitle}`);
+      console.log('before fetching:', paperTitle); // Debugging line
+      const res = await axios.get(`http://localhost:5000/api/comments`, {
+        params: { paperTitle }
+      });
+      console.log('Fetched comments from DB:', res.data); // Debugging line
       setComments(res.data);
     } catch (err) {
       console.error('Error fetching comments:', err);
@@ -32,6 +39,7 @@ export default function Comments() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     try {
       const res = await axios.post('http://localhost:5000/api/comments', {
         commentorUsername: 'currentUser',
