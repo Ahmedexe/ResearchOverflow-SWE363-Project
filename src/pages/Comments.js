@@ -110,6 +110,8 @@ const CommentItem = ({ comment, voteUp, voteDown, addReply }) => {
   );
 };
 
+
+
 export default function Comments() {
   const { state } = useLocation();
   const article = state?.article;
@@ -122,6 +124,7 @@ export default function Comments() {
 
   useEffect(() => {
     if (paperTitle) {
+      console.log('Paper title:', paperTitle); // Debugging line
       fetchComments(paperTitle);
     } else {
       setLoading(false);
@@ -131,7 +134,11 @@ export default function Comments() {
   const fetchComments = async (paperTitle) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/comments/${paperTitle}`);
+      console.log('before fetching:', paperTitle); // Debugging line
+      const res = await axios.get(`http://localhost:5000/api/comments`, {
+        params: { paperTitle }
+      });
+      console.log('Fetched comments from DB:', res.data); // Debugging line
       setComments(res.data);
       setError(null);
     } catch (err) {
@@ -144,6 +151,7 @@ export default function Comments() {
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     try {
       const res = await axios.post('http://localhost:5000/api/comments', {
         commentorUsername: 'currentUser', // You might want to replace this with actual user data

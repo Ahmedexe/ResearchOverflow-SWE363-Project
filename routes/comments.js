@@ -15,14 +15,18 @@ router.post('/comments', async (req, res) => {
 });
 
 // GET /api/comments/:paperId - Get comments for a paper
-router.get('/comments/:paperId', async (req, res) => {
+router.get('/comments', async (req, res) => {
+  const { paperTitle } = req.query;
+  console.log('Paper title: in routing files', paperTitle); // Debugging line
   try {
-    const comments = await Comment.find({ paperId: req.params.paperId });
+    const comments = await Comment.find({ paperTitle });
     res.json(comments);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+
 
 // POST /api/comments/:commentId/upvote - Upvote a comment
 router.post('/comments/:commentId/upvote', async (req, res) => {
