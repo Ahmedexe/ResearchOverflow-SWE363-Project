@@ -26,10 +26,6 @@ function Sidebar() {
         <Icon.Gear size={25} /> Settings
       </Link>
 
-
-      <div className="spacer" />
-
-
       <button className="item logout-btn" onClick={handleLogout}>
         <Icon.BoxArrowRight size={25} /> Logout
       </button>

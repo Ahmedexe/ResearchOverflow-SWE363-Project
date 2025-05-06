@@ -1,29 +1,24 @@
-.sidebar{
-    background-color: white;
-    width: 180px;
-    height: 100%;
+.sidebar {
+  background-color: white;
+  width: 180px;
+  height: 100%;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .item {
-    margin: 10px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: black;
-  }
-  
-  .item:hover {
-    background-color: rgb(194, 194, 195);
-  }
- 
+  margin: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: black;
+}
 
-.spacer {
-  flex-grow: 1;
+.item:hover {
+  background-color: rgb(194, 194, 195);
 }
 
 .logout-btn {
